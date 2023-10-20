@@ -1,3 +1,8 @@
+En este proyecto de GitHub se monitorean los servicios que hospeda la página [osm.lat](osm.lat). Con esto se puede saber qué servicios están arriba o abajo, y si hay algún problema, reportarlo por medio de un issue de GitHub.
+
+Para conocer los servicios que ofrece [osm.lat](osm.lat) puedes visitar este pad: [Servicios OSM LatAm](https://pad.osm.lat/3796WUVFTlOyg8ZPUocH2Q).
+
+====
 
 # Fettle 💟 
 
