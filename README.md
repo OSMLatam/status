@@ -2,7 +2,7 @@ En este proyecto de GitHub se monitorean los servicios que hospeda la página [o
 
 Para conocer los servicios que ofrece [osm.lat](osm.lat) puedes visitar este pad: [Servicios OSM LatAm](https://pad.osm.lat/3796WUVFTlOyg8ZPUocH2Q).
 
-====
+----
 
 # Fettle 💟 
 
