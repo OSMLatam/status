@@ -18,6 +18,7 @@ const Home: NextPage = () => {
         <ServicesSection />
       </div >
     </div>
+    <div><a href="https://pad.osm.lat/s/FTvJUqi9u">Comunidad OpenStreetMap LatAm</a></div>
   )
 }
 
