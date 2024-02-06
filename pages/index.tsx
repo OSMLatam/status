@@ -17,7 +17,8 @@ const Home: NextPage = () => {
       <div className='mt-20 w-full absolute overflow-scroll	'>
         <ServicesSection />
         <div className="text-center text-base font-medium leading-7 text-gray-900">
-          <a href="https://pad.osm.lat/s/FTvJUqi9u">Comunidad OpenStreetMap LatAm</a>
+          <a href="https://pad.osm.lat/s/FTvJUqi9u">Comunidad OpenStreetMap LatAm</a><br/>
+          Si ves un problema, puedes <a href="https://github.com/OSMLatam/status/issues">crear un incidente en GitHub</a>.
         </div>
       </div >
     </div>
