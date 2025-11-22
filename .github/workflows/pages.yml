@@ -73,20 +73,29 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      - name: Verify next.config.js after Pages setup
+        run: |
+          echo "Next.js config after Pages setup:"
+          cat next.config.js || echo "Config file not found"
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: List build output
         run: |
           echo "Checking for output directory..."
           ls -la
+          echo "Checking .next directory:"
+          ls -la .next 2>/dev/null | head -10 || echo ".next not found"
           if [ -d "./out" ]; then
             echo "Found 'out' directory"
             ls -la ./out | head -20
+          else
+            echo "Warning: 'out' directory not found"
           fi
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
+          if-no-files-found: error
 
   # Deployment job
   deploy:
