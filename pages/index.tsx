@@ -1,5 +1,4 @@
 import type { NextPage } from 'next'
-import Image from 'next/image'
 import IncidentsSection from "../src/incidents"
 import ServicesSection from "../src/services"
 
@@ -10,7 +9,13 @@ const Home: NextPage = () => {
       <div className="w-full h-40 absolute bg-light-purple dark:purple dark:bg-black">
         <div className="sm:ml-0 ml-5 mr-0 mt-3 md:pl-80 md:pr-80 sm:w-full h-full bg-purple-500 dark:bg-black">
           <a href="https://pad.osm.lat/s/FTvJUqi9u">
-          <Image src="/OSM_LatAm_Logo.svg" width={100} height={100} className="w-40 h-16" alt="OSM LatAm" />
+          <img 
+            src="/OSM_LatAm_Logo.svg" 
+            width={100} 
+            height={100} 
+            className="w-40 h-16" 
+            alt="OSM LatAm"
+          />
           </a>
         </div>
       </div>
