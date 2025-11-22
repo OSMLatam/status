@@ -97,7 +97,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
-          if-no-files-found: error
 
   # Deployment job
   deploy:
