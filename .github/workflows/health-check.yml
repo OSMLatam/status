@@ -11,6 +11,17 @@ jobs:
     name: Check all sites
     steps:
       - uses: actions/checkout@v4
-      - name: Run Shell Script
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Run Health Check Script
         id: shell_script_run
+        env:
+          # Telegram configuration (optional but recommended)
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # GitHub Issues configuration (required for issue creation)
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
         run: bash ./scripts/health-check.sh
