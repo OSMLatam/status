@@ -75,6 +75,16 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
+      - name: Check output directory
+        run: |
+          if [ -d "./out" ]; then
+            echo "Output directory 'out' exists"
+            ls -la ./out
+          else
+            echo "Output directory 'out' not found, checking .next"
+            ls -la .next
+            exit 1
+          fi
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
