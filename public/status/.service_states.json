@@ -30,9 +30,9 @@
     "issue_number": null
   },
   "Vault": {
-    "consecutive_failures": 1,
-    "last_status": "failed",
-    "first_failure_time": "2025-12-14 10:19:19",
+    "consecutive_failures": 0,
+    "last_status": "success",
+    "first_failure_time": "",
     "issue_number": null
   },
   "OSMLatam.org": {
@@ -54,19 +54,19 @@
     "issue_number": null
   },
   "Terranote-core": {
-    "consecutive_failures": 721,
+    "consecutive_failures": 722,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:09:12",
     "issue_number": null
   },
   "Terranote-WhatsApp": {
-    "consecutive_failures": 721,
+    "consecutive_failures": 722,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:22:59",
     "issue_number": null
   },
   "Terranote-Telegram": {
-    "consecutive_failures": 721,
+    "consecutive_failures": 722,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:36:42",
     "issue_number": null
