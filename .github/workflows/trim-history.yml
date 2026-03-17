@@ -1,0 +1,47 @@
+# Trim repository history to the last N commits to keep repo size manageable.
+# Health-check runs every 15 min (~96 commits/day); trimming to 500 keeps ~5 days.
+#
+# Requirements:
+#   - Branch protection must allow force-push for the workflow (or disable for main).
+#   - For very large repos, the job may time out; run scripts/trim-history-last-n.sh locally once.
+name: Trim history (keep last N commits)
+
+on:
+  schedule:
+    # Run weekly on Sunday at 03:00 UTC
+    - cron: "0 3 * * 0"
+  workflow_dispatch:
+    inputs:
+      keep_commits:
+        description: "Number of commits to keep"
+        required: false
+        default: 500
+
+env:
+  KEEP_COMMITS: 500
+
+jobs:
+  trim:
+    runs-on: ubuntu-latest
+    # Allow write to push (and force-push) after rewriting history
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set keep count from input
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.keep_commits != ''
+        run: echo "KEEP_COMMITS=${{ github.event.inputs.keep_commits }}" >> $GITHUB_ENV
+
+      - name: Trim history to last N commits
+        run: bash ./scripts/trim-history-last-n.sh "$KEEP_COMMITS"
+
+      - name: Force push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git push --force-with-lease
