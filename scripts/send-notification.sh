@@ -16,16 +16,18 @@ if [ ! -f "$STATES_FILE" ]; then
 fi
 
 # Function to send Telegram notification
+# Do NOT use curl output to decide success: Telegram returns JSON on success, so
+# "any output" would be wrong as a failure condition. Use curl exit code only.
 send_telegram() {
     local message="$1"
-    if [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
-        curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-            -d chat_id="${TELEGRAM_CHAT_ID}" \
-            -d text="${message}" \
-            -d parse_mode="Markdown" > /dev/null
-        return 0
+    if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+        return 1
     fi
-    return 1
+    curl -s -f -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+        -d chat_id="${TELEGRAM_CHAT_ID}" \
+        -d text="${message}" \
+        -d parse_mode="Markdown" > /dev/null
+    return $?
 }
 
 # Function to create GitHub issue

@@ -39,11 +39,11 @@ function useSystemStatus() {
                         status: Status.OUTAGE,
                         datetime: services[0].date
                      });
-                } else if (services.every((item) => item.status === "")) {
+                } else if (services.every((item) => item.status === "unknown")) {
                     setSystemStatus({
                         title: "Unknown",
                         status: Status.UNKNOWN,
-                        datetime: services[0].date
+                        datetime: services[0]?.date ?? ""
                     });
                 } else {
                     setSystemStatus({
