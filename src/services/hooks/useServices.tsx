@@ -75,9 +75,17 @@ async function logs(key: string): Promise<LogDaySummary[]> {
     const logDaySummary: LogDaySummary[] = [];
 
     lines.forEach((line: string) => {
-        const [created_at, status, response_time] = line.split(", ");
-        logs.push({ id: created_at, response_time, status, created_at })
-    })
+        const trimmed = line.trim();
+        if (!trimmed) return; // skip empty trailing lines
+
+        const parts = trimmed.split(", ");
+        if (parts.length < 3) return;
+
+        const [created_at, status, response_time] = parts;
+        if (!created_at || !status) return;
+
+        logs.push({ id: created_at, response_time, status, created_at });
+    });
 
     const prepareSummary = Object.values(logs.reduce((r: any, date) => {
         const [year, month, day] = date.created_at.substr(0, 10).split('-');
@@ -122,16 +130,19 @@ async function logs(key: string): Promise<LogDaySummary[]> {
 
 function fillData(data: LogDaySummary[]): LogDaySummary[] {
     const logDaySummary: LogDaySummary[] = [];
-    var today = new Date();
+    const today = new Date();
 
     // Last 90 days including today (no "tomorrow" off-by-one).
     for (var i = 0; i < 90; i += 1) {
-        const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
-        const summary = data.find((item) => item.date === d.toISOString().substr(0, 10));
+        // Logs are timestamped by the health-check runner (GitHub Actions) in UTC.
+        // Build the date keys in UTC to match `YYYY-MM-DD` extracted from the logs.
+        const d = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - i));
+        const dateKey = d.toISOString().substr(0, 10);
+        const summary = data.find((item) => item.date === dateKey);
         logDaySummary.push({
             avg_response_time: summary?.avg_response_time || 0,
             current_status: summary?.current_status || "unknown",
-            date: d.toISOString().substr(0, 10),
+            date: dateKey,
             status: summary?.status || "unknown"
         })
     }
