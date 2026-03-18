@@ -9,6 +9,9 @@ jobs:
   health_check_job:
     runs-on: ubuntu-latest
     name: Check all sites
+    # Necesario para que el workflow pueda hacer `git push` con el historial de logs
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
