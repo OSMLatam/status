@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Service from '../types/Service';
 import Log from "../types/Log";
 import LogDaySummary from "../types/LogDaySummary";
@@ -8,41 +8,62 @@ function useServices() {
     const [data, setData] = useState<Service[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
+    const [lastCheckedAt, setLastCheckedAt] = useState<string>("");
+    const hasLoadedRef = useRef(false);
 
     useEffect(() => {
+        const intervalMs = 5 * 60 * 1000; // 5 minutes
+        let isFetching = false;
+        let cancelled = false;
+
         const loadData = async () => {
-            setIsLoading(true);
+            if (isFetching) return;
+            isFetching = true;
+            const shouldToggleLoading = !hasLoadedRef.current;
+            if (shouldToggleLoading) setIsLoading(true);
             try {
                 const response = await fetch("./urls.cfg");
                 const configText = await response.text();
                 const configLines = configText.split("\n");
 
-                const services: Service[] = []
+                const services: Service[] = [];
                 for (let ii = 0; ii < configLines.length; ii++) {
                     const configLine = configLines[ii];
                     const [key, url] = configLine.split("=");
-                    if (!key || !url) {
-                        continue;
-                    }
-                    const log = await logs(key);
+                    if (!key || !url) continue;
 
+                    const log = await logs(key);
                     if (log.length > 0) {
-                        services.push({ id: ii, name: key, status: log[log.length - 1].status, logs: log })
+                        services.push({ id: ii, name: key, status: log[log.length - 1].status, logs: log });
                     } else {
-                        services.push({ id: ii, name: key, status: "unknown", logs: log })
+                        services.push({ id: ii, name: key, status: "unknown", logs: log });
                     }
                 }
-                setData(services as Service[]);
+
+                if (!cancelled) setData(services as Service[]);
             } catch (e: any) {
-                setError(e);
+                if (!cancelled) setError(e);
             } finally {
-                setIsLoading(false);
+                if (!cancelled) {
+                    setLastCheckedAt(new Date().toISOString());
+                    hasLoadedRef.current = true;
+                }
+                if (shouldToggleLoading && !cancelled) setIsLoading(false);
+                isFetching = false;
             }
         };
+
+        // Initial load + polling
         loadData();
+        const intervalId = window.setInterval(loadData, intervalMs);
+
+        return () => {
+            cancelled = true;
+            window.clearInterval(intervalId);
+        };
     }, []);
 
-    return [data, isLoading, error];
+    return [data, isLoading, error, lastCheckedAt];
 }
 
 async function logs(key: string): Promise<LogDaySummary[]> {

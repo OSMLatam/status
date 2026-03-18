@@ -9,7 +9,14 @@ import { Status } from '../utils/constants';
 
 const ServicesSection: NextPage = () => {
     const [data, isServicesLoading] = useServices();
-    const {systemStatus, isLoading} = useSystemStatus();
+    const { systemStatus, isLoading, lastCheckedAt } = useSystemStatus();
+
+    const formatUTC = (iso: string | undefined) => {
+        if (!iso) return "";
+        return new Date(iso).toISOString().replace("T", " ").slice(0, 19);
+    };
+
+    const displayLastUpdated = lastCheckedAt ? formatUTC(lastCheckedAt) : systemStatus?.datetime;
 
     const Icon = () => {
         if (systemStatus?.status === Status.OPERATIONAL) {
@@ -42,8 +49,8 @@ const ServicesSection: NextPage = () => {
                         <p className="ml-3 text-gray-900">{systemStatus?.title}</p>                        
                     </div>
                     <div>
-                        <p className="text-xs text-gray-400">Last updated</p>
-                        <p className="text-xs text-gray-400 text-end ">{systemStatus?.datetime} UTC</p>
+                        <p className="text-xs text-gray-400">Last checked</p>
+                        <p className="text-xs text-gray-400 text-end ">{displayLastUpdated} UTC</p>
                     </div>
                 </div>
             </div>
