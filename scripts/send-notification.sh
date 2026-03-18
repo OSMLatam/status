@@ -23,11 +23,21 @@ send_telegram() {
     if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
         return 1
     fi
-    curl -s -f -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-        -d chat_id="${TELEGRAM_CHAT_ID}" \
-        -d text="${message}" \
-        -d parse_mode="Markdown" > /dev/null
-    return $?
+    # Debug-friendly: capturamos el HTTP status para saber por qué falla.
+    local http_code
+    http_code="$(curl -sS -o /dev/null -w \"%{http_code}\" -X POST \"https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage\" \
+        -d chat_id=\"${TELEGRAM_CHAT_ID}\" \
+        -d text=\"${message}\" \
+        -d parse_mode=\"Markdown\" 2>&1)"
+    local curl_exit=$?
+
+    # Si curl_exit != 0, o el HTTP code no es 2xx, fallamos.
+    if [ $curl_exit -ne 0 ] || ! [[ "$http_code" =~ ^2[0-9][0-9]$ ]]; then
+        echo "Telegram send failed (service=$SERVICE_NAME curl_exit=$curl_exit http_code=$http_code)" >&2
+        return 1
+    fi
+
+    return 0
 }
 
 # Function to create GitHub issue
