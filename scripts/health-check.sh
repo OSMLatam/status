@@ -49,12 +49,20 @@ do
   # Get current state from states file
   current_state=$(jq -r ".[\"$key\"] // null" "$STATES_FILE")
   consecutive_failures=0
+  prev_consecutive_failures=0
   issue_number=""
   
   if [ "$current_state" != "null" ] && [ -n "$current_state" ]; then
     consecutive_failures=$(echo "$current_state" | jq -r '.consecutive_failures // 0')
+    prev_consecutive_failures=$consecutive_failures
     issue_number=$(echo "$current_state" | jq -r '.issue_number // ""')
   fi
+
+  # Value that we will send to the notification script.
+  # - On "failed": should be the updated consecutive failure count (1..N).
+  # - On "success": should be the previous consecutive failure count so that the
+  #   "recovery" branch in send-notification.sh can run and close issues.
+  notification_consecutive_failures=$consecutive_failures
 
   # Check service status
   for i in {1..3}
@@ -79,6 +87,7 @@ do
   # Update consecutive failures counter
   if [ "$result" = "failed" ]; then
     consecutive_failures=$((consecutive_failures + 1))
+    notification_consecutive_failures=$consecutive_failures
     # Record first failure time if this is the first failure
     if [ "$consecutive_failures" -eq 1 ]; then
       first_failure_time=$(date '+%Y-%m-%d %H:%M:%S')
@@ -88,6 +97,7 @@ do
   else
     # Reset counter on success
     consecutive_failures=0
+    notification_consecutive_failures=$prev_consecutive_failures
     first_failure_time=""
   fi
   
@@ -121,7 +131,7 @@ do
     
     # Send notification
     if [ -f "scripts/send-notification.sh" ]; then
-      notification_output=$(bash scripts/send-notification.sh "$key" "$url" "$result" "$consecutive_failures" "$issue_number" 2>&1)
+      notification_output=$(bash scripts/send-notification.sh "$key" "$url" "$result" "$notification_consecutive_failures" "$issue_number" 2>&1)
       echo "$notification_output"
       
       # Extract issue number if it was just created
