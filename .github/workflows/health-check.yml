@@ -5,6 +5,12 @@ on:
   schedule:
     - cron: "0/15 * * * *"
 
+concurrency:
+  # Evita que ejecuciones programadas se solapen (el health-check puede tardar
+  # más de 15 min con muchos servicios), lo que causa conflictos al hacer `git push`.
+  group: health-check
+  cancel-in-progress: false
+
 jobs:
   health_check_job:
     runs-on: ubuntu-latest
