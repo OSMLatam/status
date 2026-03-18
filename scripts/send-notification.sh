@@ -55,10 +55,12 @@ create_github_issue() {
 
 Este issue fue creado automáticamente por el sistema de monitoreo."
 
+    # Labels: usar solo las que existen en el repo. Si una label no existe, la API
+    # puede devolver 422 y fallar la creación del issue.
     local response=$(curl -s -w "\n%{http_code}" -X POST "https://api.github.com/repos/${GITHUB_REPO}/issues" \
         -H "Authorization: token ${GITHUB_TOKEN}" \
         -H "Accept: application/vnd.github.v3+json" \
-        -d "{\"title\":\"${issue_title}\",\"body\":\"${issue_body}\",\"labels\":[\"incident\",\"automated\"]}")
+        -d "{\"title\":\"${issue_title}\",\"body\":\"${issue_body}\",\"labels\":[\"incident\"]}")
 
     local http_code=$(echo "$response" | tail -n1)
     local body=$(echo "$response" | sed '$d')
