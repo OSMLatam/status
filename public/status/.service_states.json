@@ -1,8 +1,8 @@
 {
   "Website": {
-    "consecutive_failures": 0,
-    "last_status": "success",
-    "first_failure_time": "",
+    "consecutive_failures": 1,
+    "last_status": "failed",
+    "first_failure_time": "2026-03-18 18:35:14",
     "issue_number": null
   },
   "Mail": {
@@ -18,13 +18,13 @@
     "issue_number": null
   },
   "GeoServer": {
-    "consecutive_failures": 181,
+    "consecutive_failures": 182,
     "last_status": "failed",
     "first_failure_time": "2026-03-10 04:54:35",
     "issue_number": null
   },
   "OpenDroneMap": {
-    "consecutive_failures": 181,
+    "consecutive_failures": 182,
     "last_status": "failed",
     "first_failure_time": "2026-03-10 04:54:51",
     "issue_number": null
@@ -54,21 +54,45 @@
     "issue_number": null
   },
   "Terranote-core": {
-    "consecutive_failures": 3519,
+    "consecutive_failures": 3520,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:09:12",
     "issue_number": null
   },
   "Terranote-WhatsApp": {
-    "consecutive_failures": 3519,
+    "consecutive_failures": 3520,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:22:59",
     "issue_number": null
   },
   "Terranote-Telegram": {
-    "consecutive_failures": 3519,
+    "consecutive_failures": 3520,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:36:42",
+    "issue_number": null
+  },
+  "": {
+    "consecutive_failures": 3,
+    "last_status": "failed",
+    "first_failure_time": "2026-03-18 18:35:31",
+    "issue_number": null
+  },
+  "Guessr-col": {
+    "consecutive_failures": 0,
+    "last_status": "success",
+    "first_failure_time": "",
+    "issue_number": null
+  },
+  "Notes-api": {
+    "consecutive_failures": 1,
+    "last_status": "failed",
+    "first_failure_time": "2026-03-18 18:36:19",
+    "issue_number": null
+  },
+  "Notes-Viewer": {
+    "consecutive_failures": 1,
+    "last_status": "failed",
+    "first_failure_time": "2026-03-18 18:36:36",
     "issue_number": null
   }
 }
