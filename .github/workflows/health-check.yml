@@ -18,6 +18,7 @@ jobs:
     # Necesario para que el workflow pueda hacer `git push` con el historial de logs
     permissions:
       contents: write
+      issues: write
     steps:
       - uses: actions/checkout@v4
         with:

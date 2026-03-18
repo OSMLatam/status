@@ -21,6 +21,7 @@ fi
 send_telegram() {
     local message="$1"
     if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+        echo "Telegram not configured (missing TELEGRAM_BOT_TOKEN/CHAT_ID) for service=$SERVICE_NAME" >&2
         return 1
     fi
     # Debug-friendly: capturamos el HTTP status para saber por qué falla.
@@ -149,7 +150,9 @@ if [ "$STATUS" = "failed" ]; then
 *Estado:* El problema ha persistido por 5 verificaciones consecutivas
 *Ver issue:* https://github.com/${GITHUB_REPO}/issues/$ISSUE_NUM"
 
-            send_telegram "$MESSAGE"
+            if send_telegram "$MESSAGE"; then
+                echo "Telegram notification sent for $SERVICE_NAME (issue created)"
+            fi
         fi
     fi
 
