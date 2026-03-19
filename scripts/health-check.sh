@@ -14,6 +14,12 @@ urlsConfig="public/urls.cfg"
 echo "Reading $urlsConfig"
 while IFS='=' read -r key url
 do
+  # Skip empty lines and invalid entries
+  key="$(echo "${key:-}" | xargs)"
+  url="$(echo "${url:-}" | xargs)"
+  if [ -z "$key" ] || [ -z "$url" ]; then
+    continue
+  fi
   echo "  $key=$url"
   KEYSARRAY+=("$key")
   URLSARRAY+=("$url")
@@ -67,7 +73,10 @@ do
   # Check service status
   for i in {1..3}
   do
-    response=$(curl -o /dev/null -s -w '%{http_code} %{time_total}' --silent --output /dev/null "$url")
+    # Timeouts prevent long hangs from making the workflow exceed the schedule interval.
+    # - connect-timeout: max seconds to establish connection
+    # - max-time: max total seconds for the request
+    response=$(curl --connect-timeout 5 --max-time 15 -o /dev/null -s -w '%{http_code} %{time_total}' --silent --output /dev/null "$url")
     http_code=$(echo "$response" | cut -d ' ' -f 1)
     time_total=$(echo "$response" | cut -d ' ' -f 2)
     echo "    $http_code $time_total"
