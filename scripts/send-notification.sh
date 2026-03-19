@@ -133,7 +133,10 @@ if [ "$STATUS" = "failed" ]; then
         if send_telegram "$MESSAGE"; then
             echo "Telegram notification sent for $SERVICE_NAME (first failure)"
         fi
-    elif [ "$CONSECUTIVE_FAILURES" -eq 5 ] && [ -z "$ISSUE_NUMBER" ]; then
+    # Crear issue en cuanto se superen 5 fallos consecutivos.
+    # Esto evita quedar "atascado" si el 5to fallo ocurrió antes de que el
+    # workflow tuviera permisos correctos o si el push falló.
+    elif [ "$CONSECUTIVE_FAILURES" -ge 5 ] && [ -z "$ISSUE_NUMBER" ]; then
         # 5th consecutive failure - create GitHub issue
         ISSUE_NUM=$(create_github_issue)
         if [ -n "$ISSUE_NUM" ] && [ "$ISSUE_NUM" != "null" ]; then
