@@ -11,6 +11,10 @@ concurrency:
   group: health-check
   cancel-in-progress: false
 
+# Evita warnings de GitHub Actions sobre Node.js 20 (se forzará Node.js 24 por defecto).
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   health_check_job:
     runs-on: ubuntu-latest

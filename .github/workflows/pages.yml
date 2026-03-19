@@ -23,6 +23,10 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+# Evita warnings de GitHub Actions sobre Node.js 20 (se forzará Node.js 24).
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   # Build job
   build:
