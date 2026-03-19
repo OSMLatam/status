@@ -13,12 +13,15 @@ concurrency:
 
 # Evita warnings de GitHub Actions sobre Node.js 20 (se forzará Node.js 24 por defecto).
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
   health_check_job:
     runs-on: ubuntu-latest
     name: Check all sites
+    env:
+      # Set also at job-level to ensure the runner picks it for JavaScript actions.
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     # Necesario para que el workflow pueda hacer `git push` con el historial de logs
     permissions:
       contents: write

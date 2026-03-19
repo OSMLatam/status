@@ -25,12 +25,15 @@ concurrency:
 
 # Evita warnings de GitHub Actions sobre Node.js 20 (se forzará Node.js 24).
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+    env:
+      # Set also at job-level to ensure the runner picks it for JavaScript actions.
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -108,6 +111,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    env:
+      # Set also at job-level to ensure the runner picks it for JavaScript actions.
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     needs: build
     steps:
       - name: Deploy to GitHub Pages
