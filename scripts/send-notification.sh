@@ -24,9 +24,12 @@ send_telegram() {
         echo "Telegram not configured (missing TELEGRAM_BOT_TOKEN/CHAT_ID) for service=$SERVICE_NAME" >&2
         return 1
     fi
+    # Telegram bot tokens are typically in the form "<digits>:<token>".
+    # The ":" can confuse URL parsing in some curl versions; escape it in the URL path.
+    local telegram_bot_token_encoded="${TELEGRAM_BOT_TOKEN//:/%3A}"
     # Debug-friendly: capturamos el HTTP status para saber por qué falla.
     local http_code
-    http_code="$(curl -sS -o /dev/null -w \"%{http_code}\" -X POST \"https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage\" \
+    http_code="$(curl -sS -o /dev/null -w \"%{http_code}\" -X POST \"https://api.telegram.org/bot${telegram_bot_token_encoded}/sendMessage\" \
         -d chat_id=\"${TELEGRAM_CHAT_ID}\" \
         -d text=\"${message}\" \
         -d parse_mode=\"Markdown\" 2>&1)"
