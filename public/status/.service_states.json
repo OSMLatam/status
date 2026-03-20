@@ -1,9 +1,9 @@
 {
   "Website": {
-    "consecutive_failures": 11,
-    "last_status": "failed",
-    "first_failure_time": "2026-03-20 05:06:04",
-    "issue_number": 21
+    "consecutive_failures": 0,
+    "last_status": "success",
+    "first_failure_time": "",
+    "issue_number": null
   },
   "Mail": {
     "consecutive_failures": 0,
