@@ -145,8 +145,10 @@ El servicio **$SERVICE_NAME** ha vuelto a estar operacional.
 
 # Handle service failure
 if [ "$STATUS" = "failed" ]; then
-    if [ "$CONSECUTIVE_FAILURES" -eq 1 ]; then
-        # First failure - send Telegram notification immediately
+    if [ -z "$ISSUE_NUMBER" ] && [ "$CONSECUTIVE_FAILURES" -le 2 ]; then
+        # First (or second) failure - send Telegram notification immediately.
+        # If the first notification failed (e.g. Markdown issue), the second run
+        # gives us a chance to retry before the script moves on.
         MESSAGE="🚨 *ALERTA: Servicio caído*
 
 *Servicio:* $SERVICE_NAME
@@ -158,7 +160,11 @@ if [ "$STATUS" = "failed" ]; then
 ⚠️ Se monitoreará el servicio. Si el problema persiste por 5 verificaciones consecutivas, se creará un issue en GitHub."
 
         if send_telegram "$MESSAGE"; then
-            echo "Telegram notification sent for $SERVICE_NAME (first failure)"
+            if [ "$CONSECUTIVE_FAILURES" -eq 1 ]; then
+                echo "Telegram notification sent for $SERVICE_NAME (first failure)"
+            else
+                echo "Telegram notification sent for $SERVICE_NAME (retry after first failure)"
+            fi
         fi
     # Crear issue en cuanto se superen 5 fallos consecutivos.
     # Esto evita quedar "atascado" si el 5to fallo ocurrió antes de que el
