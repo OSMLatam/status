@@ -27,17 +27,35 @@ send_telegram() {
     # Telegram bot tokens are typically in the form "<digits>:<token>".
     # The ":" can confuse URL parsing in some curl versions; escape it in the URL path.
     local telegram_bot_token_encoded="${TELEGRAM_BOT_TOKEN//:/%3A}"
-    # Capture HTTP status for debugging when Telegram send fails.
+    # Capture HTTP status + body for debugging when Telegram send fails.
     local http_code
-    http_code="$(curl -sS -o /dev/null -w "%{http_code}" -X POST "https://api.telegram.org/bot${telegram_bot_token_encoded}/sendMessage" \
+    local curl_exit
+    local resp_body_file
+    resp_body_file="$(mktemp)"
+    http_code="$(curl -sS -o "${resp_body_file}" -w "%{http_code}" -X POST "https://api.telegram.org/bot${telegram_bot_token_encoded}/sendMessage" \
         -d chat_id="${TELEGRAM_CHAT_ID}" \
         -d text="${message}" \
         -d parse_mode="Markdown" 2>&1)"
-    local curl_exit=$?
+    curl_exit=$?
+    local resp_body
+    resp_body="$(cat "${resp_body_file}" 2>/dev/null || true)"
+    rm -f "${resp_body_file}" 2>/dev/null || true
+
+    # Telegram returns 400 when Markdown cannot be parsed. In that case, retry without parse_mode.
+    if [ $curl_exit -eq 0 ] && [ "${http_code}" -eq 400 ]; then
+        curl_exit=0
+        http_code="$(curl -sS -o /dev/null -w "%{http_code}" -X POST "https://api.telegram.org/bot${telegram_bot_token_encoded}/sendMessage" \
+            -d chat_id="${TELEGRAM_CHAT_ID}" \
+            -d text="${message}" 2>&1)"
+        curl_exit=$?
+    fi
 
     # Si curl_exit != 0, o el HTTP code no es 2xx, fallamos.
     if [ $curl_exit -ne 0 ] || ! [[ "$http_code" =~ ^2[0-9][0-9]$ ]]; then
-        echo "Telegram send failed (service=$SERVICE_NAME curl_exit=$curl_exit http_code=$http_code)" >&2
+        # Print a short snippet of the response body to help diagnose invalid Markdown.
+        local resp_snippet
+        resp_snippet="$(echo "${resp_body:-}" | tr -d '\n' | cut -c1-300)"
+        echo "Telegram send failed (service=$SERVICE_NAME curl_exit=$curl_exit http_code=$http_code response=${resp_snippet})" >&2
         return 1
     fi
 
