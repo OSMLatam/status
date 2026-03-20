@@ -27,12 +27,12 @@ send_telegram() {
     # Telegram bot tokens are typically in the form "<digits>:<token>".
     # The ":" can confuse URL parsing in some curl versions; escape it in the URL path.
     local telegram_bot_token_encoded="${TELEGRAM_BOT_TOKEN//:/%3A}"
-    # Debug-friendly: capturamos el HTTP status para saber por qué falla.
+    # Capture HTTP status for debugging when Telegram send fails.
     local http_code
-    http_code="$(curl -sS -o /dev/null -w \"%{http_code}\" -X POST \"https://api.telegram.org/bot${telegram_bot_token_encoded}/sendMessage\" \
-        -d chat_id=\"${TELEGRAM_CHAT_ID}\" \
-        -d text=\"${message}\" \
-        -d parse_mode=\"Markdown\" 2>&1)"
+    http_code="$(curl -sS -o /dev/null -w "%{http_code}" -X POST "https://api.telegram.org/bot${telegram_bot_token_encoded}/sendMessage" \
+        -d chat_id="${TELEGRAM_CHAT_ID}" \
+        -d text="${message}" \
+        -d parse_mode="Markdown" 2>&1)"
     local curl_exit=$?
 
     # Si curl_exit != 0, o el HTTP code no es 2xx, fallamos.
