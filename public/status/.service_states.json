@@ -1,14 +1,14 @@
 {
   "Website": {
-    "consecutive_failures": 1,
-    "last_status": "failed",
-    "first_failure_time": "2026-03-29 14:56:45",
+    "consecutive_failures": 0,
+    "last_status": "success",
+    "first_failure_time": "",
     "issue_number": 28
   },
   "Mail": {
-    "consecutive_failures": 1,
-    "last_status": "failed",
-    "first_failure_time": "2026-03-29 14:57:00",
+    "consecutive_failures": 0,
+    "last_status": "success",
+    "first_failure_time": "",
     "issue_number": null
   },
   "Pad": {
@@ -36,9 +36,9 @@
     "issue_number": null
   },
   "OSMLatam.org": {
-    "consecutive_failures": 1,
-    "last_status": "failed",
-    "first_failure_time": "2026-03-29 14:59:21",
+    "consecutive_failures": 0,
+    "last_status": "success",
+    "first_failure_time": "",
     "issue_number": null
   },
   "AC3": {
@@ -48,25 +48,25 @@
     "issue_number": null
   },
   "Shlink": {
-    "consecutive_failures": 1,
-    "last_status": "failed",
-    "first_failure_time": "2026-03-29 14:57:17",
+    "consecutive_failures": 0,
+    "last_status": "success",
+    "first_failure_time": "",
     "issue_number": null
   },
   "Terranote-core": {
-    "consecutive_failures": 3846,
+    "consecutive_failures": 3847,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:09:12",
     "issue_number": 25
   },
   "Terranote-WhatsApp": {
-    "consecutive_failures": 3846,
+    "consecutive_failures": 3847,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:22:59",
     "issue_number": 26
   },
   "Terranote-Telegram": {
-    "consecutive_failures": 3846,
+    "consecutive_failures": 3847,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:36:42",
     "issue_number": 27
@@ -84,13 +84,13 @@
     "issue_number": null
   },
   "Notes-api": {
-    "consecutive_failures": 327,
+    "consecutive_failures": 328,
     "last_status": "failed",
     "first_failure_time": "2026-03-18 18:36:19",
     "issue_number": 23
   },
   "Notes-Viewer": {
-    "consecutive_failures": 327,
+    "consecutive_failures": 328,
     "last_status": "failed",
     "first_failure_time": "2026-03-18 18:36:36",
     "issue_number": 24
