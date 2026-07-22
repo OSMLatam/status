@@ -1,12 +1,12 @@
 {
   "Website": {
-    "consecutive_failures": 1,
+    "consecutive_failures": 2,
     "last_status": "failed",
     "first_failure_time": "2026-07-22 07:10:19",
     "issue_number": 28
   },
   "Mail": {
-    "consecutive_failures": 1,
+    "consecutive_failures": 2,
     "last_status": "failed",
     "first_failure_time": "2026-07-22 07:10:35",
     "issue_number": null
@@ -36,7 +36,7 @@
     "issue_number": null
   },
   "OSMLatam.org": {
-    "consecutive_failures": 1,
+    "consecutive_failures": 2,
     "last_status": "failed",
     "first_failure_time": "2026-07-22 07:12:41",
     "issue_number": null
@@ -48,25 +48,25 @@
     "issue_number": null
   },
   "Shlink": {
-    "consecutive_failures": 1,
+    "consecutive_failures": 2,
     "last_status": "failed",
     "first_failure_time": "2026-07-22 07:10:52",
     "issue_number": null
   },
   "Terranote-core": {
-    "consecutive_failures": 5568,
+    "consecutive_failures": 5569,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:09:12",
     "issue_number": 25
   },
   "Terranote-WhatsApp": {
-    "consecutive_failures": 5568,
+    "consecutive_failures": 5569,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:22:59",
     "issue_number": 26
   },
   "Terranote-Telegram": {
-    "consecutive_failures": 5568,
+    "consecutive_failures": 5569,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:36:42",
     "issue_number": 27
@@ -84,7 +84,7 @@
     "issue_number": 31
   },
   "Notes-api": {
-    "consecutive_failures": 2049,
+    "consecutive_failures": 2050,
     "last_status": "failed",
     "first_failure_time": "2026-03-18 18:36:19",
     "issue_number": 23
