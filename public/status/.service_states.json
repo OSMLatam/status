@@ -48,19 +48,19 @@
     "issue_number": null
   },
   "Terranote-core": {
-    "consecutive_failures": 6781,
+    "consecutive_failures": 6782,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:09:12",
     "issue_number": 25
   },
   "Terranote-WhatsApp": {
-    "consecutive_failures": 6781,
+    "consecutive_failures": 6782,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:22:59",
     "issue_number": 26
   },
   "Terranote-Telegram": {
-    "consecutive_failures": 6781,
+    "consecutive_failures": 6782,
     "last_status": "failed",
     "first_failure_time": "2025-11-22 23:36:42",
     "issue_number": 27
@@ -72,7 +72,7 @@
     "issue_number": null
   },
   "Notes-api": {
-    "consecutive_failures": 3262,
+    "consecutive_failures": 3263,
     "last_status": "failed",
     "first_failure_time": "2026-03-18 18:36:19",
     "issue_number": 23
@@ -90,6 +90,24 @@
     "issue_number": null
   },
   "Overpass": {
+    "consecutive_failures": 0,
+    "last_status": "success",
+    "first_failure_time": "",
+    "issue_number": null
+  },
+  "Certificados": {
+    "consecutive_failures": 0,
+    "last_status": "success",
+    "first_failure_time": "",
+    "issue_number": null
+  },
+  "Maptimebogota": {
+    "consecutive_failures": 0,
+    "last_status": "success",
+    "first_failure_time": "",
+    "issue_number": null
+  },
+  "ChatMap-JOSM": {
     "consecutive_failures": 0,
     "last_status": "success",
     "first_failure_time": "",
