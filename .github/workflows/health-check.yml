@@ -4,6 +4,7 @@ name: Scheduled Health Check
 on:
   schedule:
     - cron: "0/30 * * * *"
+  workflow_dispatch:
 
 concurrency:
   # Evita que ejecuciones programadas se solapen (el health-check puede tardar
