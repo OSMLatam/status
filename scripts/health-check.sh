@@ -121,13 +121,17 @@ do
     }" "$STATES_FILE" > "$temp_file"
     mv "$temp_file" "$STATES_FILE"
   else
-    # On success, keep issue_number but reset failures
+    # On success, reset failures AND forget the issue number.
+    # send-notification.sh only alerts (Telegram / new issue) when there is no
+    # stored issue number; keeping it after a recovery silenced the service forever.
+    # The old number is still passed to send-notification.sh below (from
+    # $issue_number), so the recovery branch can close that issue.
     temp_file=$(mktemp)
     jq ".[\"$key\"] = {
       \"consecutive_failures\": 0,
       \"last_status\": \"$result\",
       \"first_failure_time\": \"\",
-      \"issue_number\": ${issue_number:-null}
+      \"issue_number\": null
     }" "$STATES_FILE" > "$temp_file"
     mv "$temp_file" "$STATES_FILE"
   fi
